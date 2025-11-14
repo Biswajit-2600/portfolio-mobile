@@ -394,12 +394,6 @@ header ul li a {
   /* Prevent any inherited blur animations */
   filter: none !important;
 }
-
-.tech-network.autoBlur {
-  filter: blur(0px);
-  animation: autoBlurAnimation linear both;
-}
-
 .scroll-down {
   height: 50px;
   width: 30px;
@@ -905,15 +899,21 @@ section {
 /* BLUR EFFECT ANIMAION */
 
 .autoBlur {
-  animation: autoBlurAnimation linear both;
+  animation: autoBlurAnimation 1.2s linear both;
   animation-timeline: view();
+  animation-range: entry 0% exit 100%;
 }
+
 @keyframes autoBlurAnimation {
   0% {
     filter: blur(40px);
+    opacity: 0;
   }
-  35%,
-  65% {
+  30% {
+    filter: blur(0);
+    opacity: 1;
+  }
+  70% {
     filter: blur(0);
     opacity: 1;
   }

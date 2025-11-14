@@ -68,7 +68,6 @@
     "\uf007", // user
     "\uf466", // boxes
     "\uf126", // code-branch
-    "\uf24e", // balance-scale
     "\uf0c7", // save
     "\uf15b", // file
     "\uf09d", // credit-card
