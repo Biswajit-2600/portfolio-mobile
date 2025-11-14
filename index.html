@@ -114,7 +114,7 @@
       </header>
       <div class="sidebar">
         <div class="close-icon">
-          <i class="bx bx-x"></i>
+          <i class="fa-solid fa-bars"></i>
         </div>
 
         <ul>
@@ -125,9 +125,24 @@
         </ul>
 
         <div class="social-sidebar">
-          <a><i class="bx bxl-youtube"></i></a>
-          <a><i class="bx bxl-github"></i></a>
-          <a><i class="bx bxl-linkedin-square"></i></a>
+          <a
+            href="mailto:biswajitpanda754@gmail.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            ><i class="fa-solid fa-envelope"></i
+          ></a>
+          <a
+            href="https://www.linkedin.com/in/biswajit-panda-me/"
+            target="_blank"
+            rel="noopener noreferrer"
+            ><i class="fa-brands fa-linkedin-in"></i
+          ></a>
+          <a
+            href="https://github.com/Biswajit-2600"
+            target="_blank"
+            rel="noopener noreferrer"
+            ><i class="fa-brands fa-github"></i
+          ></a>
         </div>
       </div>
 
@@ -170,12 +185,10 @@
           </a>
         </div>
 
-        <div
-          class="hero-skills-animation autoBlur"
-        >
+        <div class="hero-skills-animation autoBlur" data-aos-duration="1000">
           <canvas
             id="tech-network-canvas"
-            class="tech-network autoBlur"
+            class="tech-network"
             data-aos="fade-left"
             data-aos-duration="3000"
           ></canvas>
@@ -187,7 +200,7 @@
       <section class="info-section" id="info-section">
         <h1 class="section-title autoDisplay">Hello,There👋</h1>
         <div class="info-cards autoBlur">
-          <div class="card">
+          <div class="card" data-aos="fade-right" data-aos-duration="1500">
             <h1>Hi there, I'm Biswajit</h1>
             <p>
               With 4 years of experience, I have honed my skills in both
@@ -198,7 +211,7 @@
             <img src="public/assets/images/grid1.png" alt="" />
           </div>
 
-          <div class="card">
+          <div class="card" data-aos="fade-right" data-aos-duration="1000">
             <h1>Tech Stack</h1>
             <p>
               I specialize in a variety of languages, frameworks, and tools that
@@ -208,7 +221,7 @@
             <img src="public/assets/images/grid2.png" alt="" />
           </div>
 
-          <div class="card">
+          <div class="card" data-aos="fade-left" data-aos-duration="1500">
             <h1>I’m very flexible with time zone communications & locations</h1>
             <p>I'm based in Italy, Bari and open to remote work worldwide.</p>
 
@@ -223,7 +236,7 @@
             <button><i class="bx bx-send"></i> Contact Me</button>
           </div>
 
-          <div class="card">
+          <div class="card" data-aos="fade-right" data-aos-duration="1500">
             <h1>My Passion for Coding</h1>
             <p>
               I love solving problems and building things through code.
@@ -420,32 +433,31 @@
     <script>
       AOS.init();
 
-      // Ensure hero text and the canvas share the exact same AOS visibility state
-      // by observing the entire `.hero` section and toggling `aos-animate` on both
       (function syncHeroAndCanvas() {
-        const options = { threshold: [0, 0.15, 0.35, 0.6, 1] };
-        const heroSection = document.querySelector('.hero');
-        const heroInfo = document.querySelector('.hero-info');
-        const canvasEl = document.getElementById('tech-network-canvas');
-        if (!heroSection || !heroInfo || !canvasEl || !('IntersectionObserver' in window)) return;
+        const hero = document.querySelector(".hero");
+        const heroInfo = document.querySelector(".hero-info");
+        const canvas = document.getElementById("tech-network-canvas");
 
-        const io = new IntersectionObserver((entries) => {
-          // We only observe the heroSection so there will be one entry
-          const entry = entries[0];
-          if (!entry) return;
+        if (!hero || !heroInfo || !canvas) return;
 
-          if (entry.intersectionRatio > 0.35) {
-            // Add aos-animate to both elements simultaneously
-            heroInfo.classList.add('aos-animate');
-            canvasEl.classList.add('aos-animate');
-          } else {
-            // Remove aos-animate from both simultaneously
-            heroInfo.classList.remove('aos-animate');
-            canvasEl.classList.remove('aos-animate');
-          }
-        }, options);
+        const observer = new IntersectionObserver(
+          (entries) => {
+            const entry = entries[0];
 
-        io.observe(heroSection);
+            if (entry.isIntersecting) {
+              // Sync AOS activation
+              heroInfo.classList.add("aos-animate");
+              canvas.classList.add("aos-animate");
+            } else {
+              // Sync AOS deactivation
+              heroInfo.classList.remove("aos-animate");
+              canvas.classList.remove("aos-animate");
+            }
+          },
+          { threshold: 0.2 } // perfect trigger timing
+        );
+
+        observer.observe(hero);
       })();
     </script>
   </body>

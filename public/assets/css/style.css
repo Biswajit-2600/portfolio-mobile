@@ -386,18 +386,18 @@ header ul li a {
 }
 
 .tech-network {
-    height: 400px;
-    width: 400px;
-    display: block;
-    mix-blend-mode: lighten;
-    border-radius: 12px;
-    /* Prevent any inherited blur animations */
-    filter: none !important;
-}/* If autoBlur class is present, disable it for canvas to keep icons crisp */
-.tech-network.autoBlur {
-  animation: none !important;
+  height: 400px;
+  width: 400px;
+  display: block;
+  mix-blend-mode: lighten;
+  border-radius: 12px;
+  /* Prevent any inherited blur animations */
   filter: none !important;
-  opacity: 1 !important;
+}
+
+.tech-network.autoBlur {
+  filter: blur(0px);
+  animation: autoBlurAnimation linear both;
 }
 
 .scroll-down {
