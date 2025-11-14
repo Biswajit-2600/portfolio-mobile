@@ -135,6 +135,7 @@
         <video
           autoplay
           loop
+          div
           muted
           plays-inline
           src="public/assets/videos/blackhole.mp4"
@@ -147,7 +148,7 @@
           data-aos="fade-right"
           data-aos-duration="1000"
         >
-          <h1 data-aos="fade-right" data-aos-duration="3000">
+          <h1 class="autoBlur" data-aos="fade-right" data-aos-duration="3000">
             Providing <span class="gradient">the best</span> Project
             <span class="gradient">Experience</span>
           </h1>
@@ -158,7 +159,7 @@
           </p>
 
           <a
-            href="https://drive.google.com/file/d/10fCy1jZRrCAZqtSJ2FDnJ1YzoCtRlVHK/view?usp=sharing"
+            href="https://drive.google.com/file/d/1Wuc64EMk7bjlaTG3G6RCglI_wO44cpIu/view?usp=sharing"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -169,15 +170,15 @@
           </a>
         </div>
 
-        <div class="skills-video-box">
-          <video
-            class="skills-video autoBlur"
-            autoplay
-            loop
-            muted
-            plays-inline
-            src="public/assets/videos/hero-video-1.mp4"
-          ></video>
+        <div
+          class="hero-skills-animation autoBlur"
+        >
+          <canvas
+            id="tech-network-canvas"
+            class="tech-network autoBlur"
+            data-aos="fade-left"
+            data-aos-duration="3000"
+          ></canvas>
         </div>
 
         <a href="#info-section"><div class="scroll-down"></div></a>
@@ -185,7 +186,7 @@
 
       <section class="info-section" id="info-section">
         <h1 class="section-title autoDisplay">Hello,There👋</h1>
-        <div class="info-cards">
+        <div class="info-cards autoBlur">
           <div class="card">
             <h1>Hi there, I'm Biswajit</h1>
             <p>
@@ -411,11 +412,41 @@
     </div>
     <!-- Starfield Background Animation -->
     <script src="public/assets/js/starfield.js"></script>
+    <!-- Tech Network Animation -->
+    <script src="public/assets/js/tech-network.js"></script>
 
     <script src="public/assets/js/app.js"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
       AOS.init();
+
+      // Ensure hero text and the canvas share the exact same AOS visibility state
+      // by observing the entire `.hero` section and toggling `aos-animate` on both
+      (function syncHeroAndCanvas() {
+        const options = { threshold: [0, 0.15, 0.35, 0.6, 1] };
+        const heroSection = document.querySelector('.hero');
+        const heroInfo = document.querySelector('.hero-info');
+        const canvasEl = document.getElementById('tech-network-canvas');
+        if (!heroSection || !heroInfo || !canvasEl || !('IntersectionObserver' in window)) return;
+
+        const io = new IntersectionObserver((entries) => {
+          // We only observe the heroSection so there will be one entry
+          const entry = entries[0];
+          if (!entry) return;
+
+          if (entry.intersectionRatio > 0.35) {
+            // Add aos-animate to both elements simultaneously
+            heroInfo.classList.add('aos-animate');
+            canvasEl.classList.add('aos-animate');
+          } else {
+            // Remove aos-animate from both simultaneously
+            heroInfo.classList.remove('aos-animate');
+            canvasEl.classList.remove('aos-animate');
+          }
+        }, options);
+
+        io.observe(heroSection);
+      })();
     </script>
   </body>
 </html>
