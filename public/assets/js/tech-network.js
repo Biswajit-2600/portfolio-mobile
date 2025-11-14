@@ -41,9 +41,7 @@
     '\uf5dc', // brain
     '\uf5d2', // atom
     '\uf0e8', // sitemap
-    '\uf0ac', // globe
     '\uf03e', // camera
-    '\uf1e6', // podcast
     '\uf135', // rocket
     '\uf0eb', // lightbulb
     '\uf2f6', // signal
@@ -55,9 +53,6 @@
     '\uf1c3', // file-lines
     '\uf0a3', // certificate
     '\uf132', // shield
-    '\uf0ec', // exchange
-    '\uf550', // hand-pointer
-    '\uf06e', // eye
     '\uf240', // plug
     '\uf26c', // tv
     '\uf3fd', // memory
@@ -68,32 +63,16 @@
     '\uf0e0', // envelope
     '\uf095', // phone
     '\uf02d', // book
-    '\uf19d', // graduation-cap
-    '\uf0f3', // bell
     '\uf073', // calendar
     '\uf0c0', // users
     '\uf007', // user
-    '\uf019', // download
-    '\uf093', // upload
-    '\uf002', // search
-    '\uf1de', // sliders
-    '\uf0c5', // copy
-    '\uf0c4', // scissors
-    '\uf0ea', // paste
-    '\uf06d', // fire
-    '\uf0e7', // bolt
-    '\uf186', // moon
-    '\uf185', // sun
-    '\uf0c3', // flask
-    '\uf492', // box
     '\uf466', // boxes
-    '\uf3c5', // map-marked
-    '\uf279', // map
     '\uf126', // code-branch
     '\uf24e', // balance-scale
-    '\uf21e', // heartbeat
     '\uf0c7', // save
     '\uf15b', // file
+    '\uf09d', // credit-card
+    '\uf029', // qrcode
   ].map(code => ({ code, family: 'Font Awesome 6 Free', weight: '200' }));
 
   // Brands icon set (Font Awesome Brands) - weight 400
@@ -166,8 +145,8 @@
   ].map(code => ({ code, family: 'Font Awesome 6 Brands', weight: '200' }));
 
   const CONFIG = {
-    LATITUDE_RINGS: 8, // Number of latitude circles
-    LONGITUDE_LINES: 12, // Number of longitude meridians
+    LATITUDE_RINGS: 9, // Number of latitude circles
+    LONGITUDE_LINES: 13, // Number of longitude meridians
     ICON_SIZE: 20,
     MOVE_SPEED: 0.008, // Auto-rotation speed
     LINE_WIDTH: 1.0,
