@@ -47,7 +47,6 @@
     "\uf2f6", // signal
     "\uf242", // battery
     "\uf0c1", // link
-    "\uf0ce", // table
     "\uf1c6", // file-code
     "\uf1c7", // file-archive
     "\uf1c3", // file-lines
@@ -72,7 +71,7 @@
     "\uf15b", // file
     "\uf09d", // credit-card
     "\uf029", // qrcode
-  ].map((code) => ({ code, family: "Font Awesome 6 Free", weight: "200" }));
+  ].map((code) => ({ code, family: "Font Awesome 6 Free", weight: "900" }));
 
   // Brands icon set (Font Awesome Brands) - weight 400
   const brandIcons = [
@@ -103,45 +102,43 @@
     "\uf3b1", // safari
     "\uf392", // ubuntu
     "\uf3af", // fedora
-    "\uf3c5", // windows
+    "\uf17a", // windows
     "\uf42d", // php
-    "\uf1a9", // spotify
+    "\uf1a9", // droplet
+    "\uf1bc", // spotify
     "\uf167", // youtube
     "\uf16d", // instagram
     "\uf3d0", // slack
     "\uf1d1", // gitlab
     "\uf3d2", // trello
     "\uf1e7", // dropbox
-    "\uf3e0", // google
+    "\uf1a0", // google
     "\uf412", // digital-ocean
     "\uf3d7", // wordpress
     "\uf16a", // reddit
     "\uf415", // bootstrap
     "\uf41e", // sass
     "\uf799", // figma
-    "\uf3fa", // sketch
+    "\uf7c6", // sketch
     "\uf1f0", // stripe
     "\uf1ed", // paypal
     "\uf3ca", // microsoft
     "\uf7bc", // redhat
     "\uf3b6", // jenkins
-    "\uf198", // slack
     "\uf2c6", // telegram
     "\uf3b7", // php-alt
-    "\uf3dd", // rust
-    "\uf3e0", // swift
-    "\uf3b3", // ruby
     "\uf3af", // dev
     "\uf0d5", // stack-overflow-alt
     "\uf1b4", // behance
     "\uf1b5", // dribbble
     "\uf3d3", // medium
-    "\uf121", // codepen
+    "\uf1cb", // codepen
     "\uf171", // bitbucket
-    "\uf433", // flutter
+    "\uf841", // flutter
     "\uf3b9", // unity
-    "\uf084", // discord
-  ].map((code) => ({ code, family: "Font Awesome 6 Brands", weight: "200" }));
+    "\uf392", // discord
+    "\uf268", // discord
+  ].map((code) => ({ code, family: "Font Awesome 6 Brands", weight: "400" }));
 
   const CONFIG = {
     LATITUDE_RINGS: 9, // Number of latitude circles
@@ -155,9 +152,9 @@
 
   // Selected Font Awesome families/weights (detected at runtime)
   let faSolidFamily = "Font Awesome 6 Free";
-  let faSolidWeight = "200";
+  let faSolidWeight = "900";
   let faBrandFamily = "Font Awesome 6 Brands";
-  let faBrandWeight = "200";
+  let faBrandWeight = "400";
 
   // Interaction state
   let isDragging = false;

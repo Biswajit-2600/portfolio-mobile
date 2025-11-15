@@ -391,8 +391,6 @@ header ul li a {
   display: block;
   mix-blend-mode: lighten;
   border-radius: 12px;
-  /* Prevent any inherited blur animations */
-  filter: none !important;
 }
 .scroll-down {
   height: 50px;
@@ -900,8 +898,7 @@ section {
 
 .autoBlur {
   animation: autoBlurAnimation 1.2s linear both;
-  animation-timeline: view();
-  animation-range: entry 0% exit 100%;
+  animation-timeline: view(block);
 }
 
 @keyframes autoBlurAnimation {
@@ -909,18 +906,21 @@ section {
     filter: blur(40px);
     opacity: 0;
   }
-  30% {
-    filter: blur(0);
-    opacity: 1;
-  }
-  70% {
+  35%,
+  65% {
     filter: blur(0);
     opacity: 1;
   }
   100% {
     filter: blur(40px);
-    opacity: 0;
+    opacity: 1;
   }
+}
+
+/* For hero section children - manual JS control with smooth animation */
+.hero .autoBlurReverse {
+  will-change: filter, opacity;
+  transition: opacity 0.3s ease-out;
 }
 
 /* AUTO DISPLAY ANIMAION */

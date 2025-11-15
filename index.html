@@ -185,7 +185,10 @@
           </a>
         </div>
 
-        <div class="hero-skills-animation autoBlur" data-aos-duration="1000">
+        <div
+          class="hero-skills-animation autoBlurReverse"
+          data-aos-duration="1000"
+        >
           <canvas
             id="tech-network-canvas"
             class="tech-network"
@@ -427,38 +430,9 @@
     <script src="public/assets/js/starfield.js"></script>
     <!-- Tech Network Animation -->
     <script src="public/assets/js/tech-network.js"></script>
-
-    <script src="public/assets/js/app.js"></script>
+    <!-- AOS Library -->
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-    <script>
-      AOS.init();
-
-      (function syncHeroAndCanvas() {
-        const hero = document.querySelector(".hero");
-        const heroInfo = document.querySelector(".hero-info");
-        const canvas = document.getElementById("tech-network-canvas");
-
-        if (!hero || !heroInfo || !canvas) return;
-
-        const observer = new IntersectionObserver(
-          (entries) => {
-            const entry = entries[0];
-
-            if (entry.isIntersecting) {
-              // Sync AOS activation
-              heroInfo.classList.add("aos-animate");
-              canvas.classList.add("aos-animate");
-            } else {
-              // Sync AOS deactivation
-              heroInfo.classList.remove("aos-animate");
-              canvas.classList.remove("aos-animate");
-            }
-          },
-          { threshold: 0.2 } // perfect trigger timing
-        );
-
-        observer.observe(hero);
-      })();
-    </script>
+    <!-- Main App Script (includes AOS initialization) -->
+    <script src="public/assets/js/app.js"></script>
   </body>
 </html>
