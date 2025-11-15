@@ -142,13 +142,18 @@
 
   const CONFIG = {
     LATITUDE_RINGS: 9, // Number of latitude circles
-    LONGITUDE_LINES: 13, // Number of longitude meridians
+    LONGITUDE_LINES: 15, // Number of longitude meridians
     ICON_SIZE: 20,
     MOVE_SPEED: 0.008, // Auto-rotation speed
     LINE_WIDTH: 1.0,
     LINE_OPACITY: 0.5,
-    BASE_RADIUS: 180, // Base globe radius
+    BASE_RADIUS: 180, // Base globe radius (will be recalculated on init)
   };
+  // Multiplier to tweak the default 'natural' size of the globe.
+  // Increase slightly to make globe look larger by default.
+  const NATURAL_SIZE_MULTIPLIER = 1;
+  // Keep a local default icon size so we can recompute on resize.
+  const DEFAULT_ICON_SIZE = CONFIG.ICON_SIZE;
 
   // Selected Font Awesome families/weights (detected at runtime)
   let faSolidFamily = "Font Awesome 6 Free";
@@ -177,6 +182,13 @@
     height = rect.height;
 
     console.log("Tech Network initialized:", width, "x", height);
+
+    // Recalculate sensible BASE_RADIUS and ICON_SIZE based on current canvas size
+    // so the globe naturally fills the canvas better while keeping zoom/drag.
+    const minDim = Math.min(width, height);
+    // Roughly 42-46% of the smaller dimension feels natural; multiply for a little larger look.
+    CONFIG.BASE_RADIUS = Math.round(minDim * 0.44 * NATURAL_SIZE_MULTIPLIER);
+    CONFIG.ICON_SIZE = Math.round(DEFAULT_ICON_SIZE * NATURAL_SIZE_MULTIPLIER);
 
     // Create nodes at latitude-longitude grid intersections
     iconNodes = [];

@@ -372,8 +372,8 @@ header ul li a {
   right: 5%;
   top: 53%;
   transform: translateY(-50%);
-  width: 480px;
-  height: 480px;
+  width: 500px; /* slightly larger natural size */
+  height: 500px; /* slightly larger natural size */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -386,11 +386,13 @@ header ul li a {
 }
 
 .tech-network {
-  height: 400px;
-  width: 400px;
+  height: 100%; /* full height of container */
+  width: 100%; /* full width of container */
   display: block;
   mix-blend-mode: lighten;
   border-radius: 12px;
+  max-width: 100%;
+  max-height: 100%;
 }
 .scroll-down {
   height: 50px;
@@ -1194,7 +1196,8 @@ section {
   }
 
   .hero .hero-skills-animation {
-    height: 200px;
+    height: 240px;
+    width: 240px;
     top: 5%;
   }
 

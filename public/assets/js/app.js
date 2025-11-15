@@ -85,16 +85,16 @@ if (heroSkillsAnimation && heroSection) {
           targetBlur = 0;
         } else if (scrollProgress > 0.65) {
           // Slight blur as it starts to exit
-          targetBlur = ((0.75 - scrollProgress) / 0.1) * 5;
+          targetBlur = ((0.75 - scrollProgress) / 0.1) * 15;
         } else if (scrollProgress > 0.5) {
           // Moderate blur
-          targetBlur = 5 + ((0.65 - scrollProgress) / 0.15) * 8;
+          targetBlur = 5 + ((0.65 - scrollProgress) / 0.15) * 20;
         } else if (scrollProgress > 0.35) {
           // Increasing blur
-          targetBlur = 13 + ((0.5 - scrollProgress) / 0.15) * 10;
+          targetBlur = 13 + ((0.5 - scrollProgress) / 0.15) * 25;
         } else if (scrollProgress > 0.25) {
           // Heavy blur
-          targetBlur = 23 + ((0.35 - scrollProgress) / 0.1) * 17;
+          targetBlur = 23 + ((0.35 - scrollProgress) / 0.1) * 30;
         } else {
           // Maximum blur when mostly out of view
           targetBlur = 40;
