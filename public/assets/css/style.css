@@ -220,7 +220,7 @@ header ul li a {
   height: 100vh;
   align-items: center;
   justify-content: space-between;
-  padding-top: 5vh;
+  padding-top: 12vh;
 }
 
 .hero-info {
@@ -240,11 +240,12 @@ header ul li a {
 
 .hero-info h1 {
   font-size: 60px;
-  max-width: 600px;
+  max-width: 850px;
   font-weight: 700;
   line-height: 70px;
   margin-top: 40px;
   margin-bottom: 30px;
+  white-space: normal;
 }
 
 .hero-info p {
@@ -364,6 +365,70 @@ header ul li a {
 @keyframes animate-gradient {
   to {
     background-position: 200%;
+  }
+}
+
+/* Text Slider Animation */
+.text-slider {
+  display: inline-block;
+  position: relative;
+  vertical-align: top;
+  overflow: hidden;
+  height: 70px;
+  padding: 0 10px;
+  line-height: 70px;
+  /* Fine-tune baseline alignment */
+  transform: translateY(2px);
+}
+
+.text-slider-wrapper {
+  display: flex;
+  flex-direction: column;
+  animation: textSlider 21s infinite cubic-bezier(0.9, 0.01, 0.3, 0.99);
+}
+
+.text-slider-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 70px;
+  line-height: 70px;
+  white-space: nowrap;
+}
+
+.slider-icon {
+  width: 42px;
+  height: 42px;
+  padding: 8px;
+  border-radius: 50%;
+  background-color: rgba(114, 161, 222, 0.15);
+  object-fit: contain;
+}
+
+@keyframes textSlider {
+  0% {
+    transform: translateY(0.5%);
+  }
+  12.5% {
+    transform: translateY(-12.5%);
+  }
+  25% {
+    transform: translateY(-25%);
+  }
+  37.5% {
+    transform: translateY(-37.5%);
+  }
+  50% {
+    transform: translateY(-50%);
+  }
+  62.5% {
+    transform: translateY(-62.5%);
+  }
+  75% {
+    transform: translateY(-75%);
+  }
+  87.5% {
+    transform: translateY(-87.5%);
   }
 }
 
@@ -1191,6 +1256,26 @@ section {
     bottom: 5%;
   }
 
+  .hero-info h1 {
+    line-height: 50px;
+  }
+
+  .text-slider {
+    height: 50px;
+    padding: 0 5px;
+  }
+
+  .text-slider-item {
+    height: 50px;
+    gap: 8px;
+  }
+
+  .slider-icon {
+    width: 28px;
+    height: 28px;
+    padding: 5px;
+  }
+
   .scroll-down {
     bottom: 5%;
   }
@@ -1343,6 +1428,22 @@ section {
 
   .hero-info h1 {
     font-size: 35px;
+    line-height: 42px;
+  }
+
+  .text-slider {
+    height: 42px;
+  }
+
+  .text-slider-item {
+    height: 42px;
+    gap: 6px;
+  }
+
+  .slider-icon {
+    width: 24px;
+    height: 24px;
+    padding: 4px;
   }
 
   .scroll-down {
