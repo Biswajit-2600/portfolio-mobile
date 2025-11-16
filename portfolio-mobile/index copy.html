@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portflio - Biswajit Panda</title>
+    <link rel="stylesheet" href="public/assets/css/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="public/assets/icons/favicon.ico"
+    />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="public/assets/icons/favicon.svg"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Starfield Canvas Background -->
+    <canvas id="starfield"></canvas>
+
+    <div class="container">
+      <header data-aos="fade-down" data-aos-duration="2000">
+        <div class="left">
+          <a href="#hero"
+            ><img src="public/assets/icons/favicon.svg" alt="logo"
+          /></a>
+          <a href="#hero" style="color: inherit; text-decoration: none"
+            ><h2><span style="color: #72a1dea2">Biswajit</span> P.</h2></a
+          >
+        </div>
+
+        <ul>
+          <li>
+            <a href="#info-section">
+              <div class="nav-capsule">
+                <i class="fa-solid fa-user"></i>
+                <span>About</span>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#skills-section">
+              <div class="nav-capsule">
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+                <span>Skills</span>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#projects-section">
+              <div class="nav-capsule">
+                <i class="fa-solid fa-laptop-code"></i>
+                <span>Projects</span>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#experience-section">
+              <div class="nav-capsule">
+                <i class="fa-solid fa-briefcase"></i>
+                <span>Experience</span>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#education-section">
+              <div class="nav-capsule">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span>Education</span>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#contact-section">
+              <div class="nav-capsule">
+                <i class="fa-solid fa-paper-plane"></i>
+                <span>Contact</span>
+              </div>
+            </a>
+          </li>
+        </ul>
+
+        <div class="fav-icons">
+          <a
+            href="mailto:biswajitpanda754@gmail.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            ><span><i class="fa-solid fa-envelope"></i></span
+          ></a>
+          <a
+            href="https://www.linkedin.com/in/biswajit-panda-me/"
+            target="_blank"
+            rel="noopener noreferrer"
+            ><span><i class="fa-brands fa-linkedin-in"></i></span
+          ></a>
+          <a
+            href="https://github.com/Biswajit-2600"
+            target="_blank"
+            rel="noopener noreferrer"
+            ><span><i class="fa-brands fa-github"></i></span
+          ></a>
+        </div>
+
+        <div class="menu-icon">
+          <i class="bx bx-menu"></i>
+        </div>
+      </header>
+      <div class="sidebar">
+        <div class="close-icon">
+          <i class="fa-solid fa-bars"></i>
+        </div>
+
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Skills</a></li>
+          <li><a href="#">Projects</a></li>
+        </ul>
+
+        <div class="social-sidebar">
+          <a
+            href="mailto:biswajitpanda754@gmail.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            ><i class="fa-solid fa-envelope"></i
+          ></a>
+          <a
+            href="https://www.linkedin.com/in/biswajit-panda-me/"
+            target="_blank"
+            rel="noopener noreferrer"
+            ><i class="fa-brands fa-linkedin-in"></i
+          ></a>
+          <a
+            href="https://github.com/Biswajit-2600"
+            target="_blank"
+            rel="noopener noreferrer"
+            ><i class="fa-brands fa-github"></i
+          ></a>
+        </div>
+      </div>
+
+      <div class="blackhole-box" data-aos="fade-down" data-aos-duration="2000">
+        <video
+          autoplay
+          loop
+          div
+          muted
+          plays-inline
+          src="public/assets/videos/blackhole.mp4"
+        ></video>
+      </div>
+
+      <section class="hero" id="hero">
+        <div
+          class="hero-info autoBlur"
+          data-aos="fade-right"
+          data-aos-duration="1000"
+        >
+          <h1 class="autoBlur" data-aos="fade-right" data-aos-duration="3000">
+            Providing <span class="gradient">the best</span> Project
+            <span class="gradient">Experience</span>
+          </h1>
+
+          <p>
+            I'm a front-end developer with experience in Website, Mobile and
+            Software development. Check out my projects and skills.
+          </p>
+
+          <a
+            href="https://drive.google.com/file/d/1Wuc64EMk7bjlaTG3G6RCglI_wO44cpIu/view?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <button>
+              <i class="fa-solid fa-file-lines" style="font-size: 18px"></i>
+              Resume
+            </button>
+          </a>
+        </div>
+
+        <div
+          class="hero-skills-animation autoBlurReverse"
+          data-aos-duration="1000"
+        >
+          <canvas
+            id="tech-network-canvas"
+            class="tech-network"
+            data-aos="fade-left"
+            data-aos-duration="3000"
+          ></canvas>
+        </div>
+
+        <a href="#info-section"><div class="scroll-down"></div></a>
+      </section>
+
+      <section class="info-section" id="info-section">
+        <h1 class="section-title autoDisplay">Hello,There👋</h1>
+        <div class="info-cards autoBlur autoDisplay">
+          <div class="card" data-aos="fade-right" data-aos-duration="1500">
+            <h1>Hi there, I'm Biswajit</h1>
+            <p>
+              With 4 years of experience, I have honed my skills in both
+              frontend and backend dev, creating dynamic and responsive
+              websites.
+            </p>
+
+            <img src="public/assets/images/grid1.png" alt="" />
+          </div>
+
+          <div class="card" data-aos="fade-right" data-aos-duration="1000">
+            <h1>Tech Stack</h1>
+            <p>
+              I specialize in a variety of languages, frameworks, and tools that
+              allow me to build robust and scalable applications.
+            </p>
+
+            <img src="public/assets/images/grid2.png" alt="" />
+          </div>
+
+          <div class="card" data-aos="fade-left" data-aos-duration="1500">
+            <h1>I’m very flexible with time zone communications & locations</h1>
+            <p>I'm based in Italy, Bari and open to remote work worldwide.</p>
+
+            <video
+              src="public/assets/videos/glob.mp4"
+              autoplay
+              loop
+              muted
+              plays-inline
+            ></video>
+
+            <button><i class="bx bx-send"></i> Contact Me</button>
+          </div>
+
+          <div class="card" data-aos="fade-right" data-aos-duration="1500">
+            <h1>My Passion for Coding</h1>
+            <p>
+              I love solving problems and building things through code.
+              Programming isn't just my profession—it's my passion. I enjoy
+              exploring new technologies, and enhancing my skills.
+            </p>
+
+            <img src="public/assets/images/grid4.png" alt="" />
+          </div>
+        </div>
+      </section>
+
+      <section class="my-project">
+        <h1 class="section-title autoDisplay">My Projects 👨‍💻</h1>
+        <div class="project-card">
+          <div class="project-vidbox autoBlur">
+            <video
+              loop
+              id="projectVideo1"
+              src="public/assets/videos/project1.mp4"
+            ></video>
+            <div class="hover-sign"></div>
+          </div>
+          <div class="project-info fadein-left">
+            <h1>Animated <span class="gradient">Gaming</span> Website</h1>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta
+              ipsam excepturi ex in corrupti similique dolor nam, suscipit, odio
+              soluta at recusandae nulla, id fugiat!
+            </p>
+            <button><i class="bx bx-link-external"></i> Website</button>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-vidbox autoBlur">
+            <video
+              loop
+              id="projectVideo2"
+              src="public/assets/videos/project2.mp4"
+            ></video>
+          </div>
+          <div class="project-info fadein-left">
+            <h1>Modern <span class="gradient">Portfolio</span> Website</h1>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam modi
+              voluptates assumenda omnis impedit ipsa veritatis soluta earum
+              minima consequatur.
+            </p>
+            <button><i class="bx bx-link-external"></i> Website</button>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-vidbox autoBlur">
+            <video
+              loop
+              id="projectVideo3"
+              src="public/assets/videos/project3.mp4"
+            ></video>
+          </div>
+
+          <div class="project-info fadein-left">
+            <h1>Movie <span class="gradient">Landing</span> Page</h1>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores
+              numquam saepe itaque sapiente odit neque necessitatibus explicabo
+              hic laudantium ipsam nesciunt ducimus, cumque ratione esse.
+            </p>
+            <button><i class="bx bx-link-external"></i> Website</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="skills-section">
+        <h1 class="section-title autoDisplay">My Skills 💪</h1>
+        <div class="skills-box autoDisplay">
+          <img
+            class="skills-image"
+            src="public/assets/images/digital brain (2).png"
+            alt=""
+          />
+          <div class="Designer">
+            <h1 class="gradient">Designer <i class="bx bx-laptop"></i></h1>
+            <p>
+              I have expertise in HTML, CSS, JavaScript, and design tools like
+              Figma and Adobe XD. My strength lies in blending aesthetics with
+              functionality to create seamless user experiences.
+            </p>
+          </div>
+
+          <div class="coder">
+            <h1 class="gradient">Coder <i class="bx bx-code-block"></i></h1>
+            <p>
+              I’m skilled in HTML, CSS, JavaScript, and frameworks like React
+              and Node.js. I also have experience with database management using
+              MongoDB and MySQL.
+            </p>
+          </div>
+
+          <div
+            class="slider"
+            reverse="true"
+            style="--width: 100px; --height: 100px; --quantity: 9"
+          >
+            <div class="list">
+              <div class="item" style="--position: 1">
+                <img src="public/assets/images/1.png" alt="" />
+              </div>
+              <div class="item" style="--position: 2">
+                <img src="public/assets/images/2.png" alt="" />
+              </div>
+              <div class="item" style="--position: 3">
+                <img src="public/assets/images/3.webp" alt="" />
+              </div>
+              <div class="item" style="--position: 4">
+                <img src="public/assets/images/4.webp" alt="" />
+              </div>
+              <div class="item" style="--position: 5">
+                <img src="public/assets/images/5.png" alt="" />
+              </div>
+              <div class="item" style="--position: 6">
+                <img src="public/assets/images/6.png" alt="" />
+              </div>
+              <div class="item" style="--position: 7">
+                <img src="public/assets/images/7.png" alt="" />
+              </div>
+              <div class="item" style="--position: 8">
+                <img src="public/assets/images/8.png" alt="" />
+              </div>
+              <div class="item" style="--position: 9">
+                <img src="public/assets/images/9.png" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="contact-section">
+        <h1 class="section-title autoDisplay">Let's talk😊</h1>
+
+        <div class="social-box autoBlur">
+          <a href="#"><i class="bx bxs-phone"></i> +39 111 222 444</a>
+          <a href="#"><i class="bx bxl-telegram"></i> Contact Example.com</a>
+          <a href="#"
+            ><i class="bx bxl-linkedin-square"></i> Contact Example.com</a
+          >
+          <div class="social-icons">
+            <a href="#"><i class="bx bxl-youtube"></i></a>
+            <a href="#"><i class="bx bxl-twitter"></i></a>
+            <a href="#"><i class="bx bxl-facebook-circle"></i></a>
+          </div>
+        </div>
+
+        <div class="contact-box autoBlur">
+          <p>
+            Wheter you're looking to build a new website, improve your existing
+            platform, or bring a unique project to file. i'm here to help.
+          </p>
+
+          <p>Full Name</p>
+          <input placeholder="Your Full name" type="full name" />
+
+          <p>Email Address</p>
+          <input placeholder="Your Email" type="Contact" />
+
+          <p>Your Message</p>
+          <input
+            class="input-message"
+            type="contact"
+            placeholder="shaire your thoughts..."
+          />
+
+          <button>Send Message <i class="bx bx-mail-send"></i></button>
+        </div>
+      </section>
+
+      <section class="footer">
+        <h1>©️2025, Made with ❤️ by Biswajit</h1>
+        <div class="fav-icons">
+          <p><i class="bx bxl-youtube"></i></p>
+          <p><i class="bx bxl-github"></i></p>
+          <p><i class="bx bxl-linkedin-square"></i></p>
+        </div>
+      </section>
+    </div>
+    <!-- Starfield Background Animation -->
+    <script src="public/assets/js/starfield.js"></script>
+    <!-- Tech Network Animation -->
+    <script src="public/assets/js/tech-network.js"></script>
+    <!-- AOS Library -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <!-- Main App Script (includes AOS initialization) -->
+    <script src="public/assets/js/app.js"></script>
+  </body>
+</html>
