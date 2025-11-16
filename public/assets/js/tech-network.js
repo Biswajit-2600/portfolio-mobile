@@ -148,6 +148,7 @@
     LINE_WIDTH: 1.0,
     LINE_OPACITY: 2,
     BASE_RADIUS: 180, // Base globe radius (will be recalculated on init)
+    EARTH_RADIUS_RATIO: 0.85, // Earth size relative to satellite orbit (55% of BASE_RADIUS)
     CONNECTION_DISTANCE: 50, // Base max distance for lines (will be scaled with zoom)
     MAX_CONNECTIONS: 3, // Max connections per icon
     MIN_ICON_DISTANCE: 2, // Minimum angular distance between icons (in radians) - smaller for more icons
@@ -348,7 +349,9 @@
     iconNodes.forEach(node => node.connections = []);
 
     // Scale connection distance with zoom level to maintain visual consistency
-    const scaledConnectionDistance = CONFIG.CONNECTION_DISTANCE * zoomLevel;
+    // Add time-based oscillation for frequent connect/disconnect without moving icons
+    const timeOscillation = Math.sin(Date.now() * 0.005) * 0.2 + 1; // Oscillates between 0.8 and 1.2 (faster)
+    const scaledConnectionDistance = CONFIG.CONNECTION_DISTANCE * zoomLevel * timeOscillation;
 
     // Calculate connections based on 2D screen distance
     for (let i = 0; i < iconNodes.length; i++) {
@@ -412,6 +415,449 @@
     ctx.shadowBlur = 0;
   }
 
+  // Combined effects animation state
+  let haloRotation = 0;
+  let pulsePhase = 0;
+  let earthGridRotation = 0;
+  let binaryDigits = [];
+  let fractalRings = [];
+
+  function initBinaryDigits() {
+    binaryDigits = [];
+    const numDigits = 400;
+    const goldenRatio = (1 + Math.sqrt(5)) / 2;
+    
+    for (let i = 0; i < numDigits; i++) {
+      // Fibonacci sphere algorithm for perfect uniform distribution
+      const theta = 2 * Math.PI * i / goldenRatio;
+      const phi = Math.acos(1 - 2 * (i + 0.5) / numDigits);
+      
+      binaryDigits.push({
+        value: Math.random() > 0.5 ? '1' : '0',
+        angle: theta,
+        elevation: phi - Math.PI / 2,
+        distance: 0.3 + (i % 12) * 0.055, // 12 radial layers from 0.3 to 0.905 (throughout entire orb)
+        speed: 0.003 + (i % 7) * 0.0006,
+        elevationSpeed: ((i % 5) - 2.5) * 0.0008,
+        opacity: 0.4 + (i % 6) * 0.1,
+        size: 8 + (i % 4),
+      });
+    }
+  }
+
+  function drawEarth() {
+    const cx = width / 2;
+    const cy = height / 2;
+    const coreRadius = CONFIG.BASE_RADIUS * CONFIG.EARTH_RADIUS_RATIO * zoomLevel;
+
+    ctx.save();
+
+    // Update animation states
+    earthGridRotation += 0.003;
+    pulsePhase += 0.03;
+    const pulsatingScale = 1 + Math.sin(pulsePhase * 0.5) * 0.15;
+    const innerPulse = 1 + Math.sin(pulsePhase * 0.8) * 0.08; // Subtle inner pulse
+
+    // ==== EFFECT 1: DARK BLUE GRADIENT BASE ====
+    // Dark sphere background with deep blue gradient container (more transparent for starfield visibility)
+    const sphereGradient = ctx.createRadialGradient(
+      cx - coreRadius * 0.3,
+      cy - coreRadius * 0.3,
+      coreRadius * 0.1,
+      cx, cy, coreRadius
+    );
+    sphereGradient.addColorStop(0, 'rgba(30, 50, 90, 0.3)');  // Reduced from 0.5
+    sphereGradient.addColorStop(0.4, 'rgba(20, 40, 75, 0.27)'); // Reduced from 0.45
+    sphereGradient.addColorStop(0.7, 'rgba(15, 30, 60, 0.24)'); // Reduced from 0.4
+    sphereGradient.addColorStop(1, 'rgba(10, 20, 45, 0.18)');  // Reduced from 0.3
+
+    ctx.fillStyle = sphereGradient;
+    ctx.beginPath();
+    ctx.arc(cx, cy, coreRadius, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Glowing inner core with subtle pulsating effect
+    ctx.globalCompositeOperation = 'lighter';
+    const innerCoreRadius = coreRadius * 0.35 * pulsatingScale * innerPulse;
+    const innerGlow = ctx.createRadialGradient(
+      cx, cy, 0,
+      cx, cy, innerCoreRadius
+    );
+    const pulseOpacity = 0.6 + Math.sin(pulsePhase * 0.8) * 0.1; // Subtle opacity pulse
+    innerGlow.addColorStop(0, `rgba(255, 255, 255, ${pulseOpacity})`);
+    innerGlow.addColorStop(0.3, `rgba(180, 220, 255, ${pulseOpacity * 0.85})`);
+    innerGlow.addColorStop(0.6, `rgba(100, 180, 255, ${pulseOpacity * 0.65})`);
+    innerGlow.addColorStop(1, 'rgba(50, 130, 255, 0)');
+    
+    ctx.fillStyle = innerGlow;
+    ctx.beginPath();
+    ctx.arc(cx, cy, innerCoreRadius, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Expanding pulse ring circles (subtle weight but prominent visibility)
+    const pulse1 = (pulsePhase * 0.6) % (Math.PI * 2);
+    const pulse2 = (pulsePhase * 0.6 + Math.PI) % (Math.PI * 2);
+    
+    // First pulse ring - starting from exact center point (radius 0), growing outward
+    const pulseProgress1 = pulse1 / (Math.PI * 2); // 0 to 1
+    const ringRadius1 = coreRadius * (pulseProgress1 * 0.5); // Grow from 0 to 50% of coreRadius
+    const ringOpacity1 = (1 - pulseProgress1) * 0.8;
+    
+    if (ringRadius1 > 2) { // Only draw when radius is visible (> 2px)
+      ctx.strokeStyle = `rgba(100, 200, 255, ${ringOpacity1})`;
+      ctx.lineWidth = 1; // Very subtle weight
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = `rgba(100, 200, 255, ${ringOpacity1 * 0.8})`;
+      ctx.beginPath();
+      ctx.arc(cx, cy, ringRadius1, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    
+    // Second pulse ring - starting from exact center point, growing outward
+    const pulseProgress2 = pulse2 / (Math.PI * 2); // 0 to 1
+    const ringRadius2 = coreRadius * (pulseProgress2 * 0.5); // Grow from 0 to 50% of coreRadius
+    const ringOpacity2 = (1 - pulseProgress2) * 0.8;
+    
+    if (ringRadius2 > 2) { // Only draw when radius is visible (> 2px)
+      ctx.strokeStyle = `rgba(150, 220, 255, ${ringOpacity2})`;
+      ctx.lineWidth = 1; // Very subtle weight
+      ctx.shadowBlur = 12;
+      ctx.shadowColor = `rgba(150, 220, 255, ${ringOpacity2 * 0.8})`;
+      ctx.beginPath();
+      ctx.arc(cx, cy, ringRadius2, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    
+    ctx.shadowBlur = 0;
+    ctx.globalCompositeOperation = 'source-over';
+
+    // ==== EFFECT 2: REALISTIC EARTH GRID AROUND INNERMOST ORB ====
+    // Exact replication of Earth's latitude/longitude system
+    ctx.lineWidth = 1.5; // Increased for prominence
+    const gridRadius = coreRadius * 0.85; // Around innermost orb
+    
+    // Draw latitude circles (parallels) - every 10° from -80° to 80°
+    const latitudes = [];
+    for (let lat = -80; lat <= 80; lat += 10) {
+      latitudes.push(lat);
+    }
+    
+    ctx.save();
+    ctx.translate(cx, cy);
+    
+    // Draw all latitude lines as 3D curves respecting spherical surface
+    latitudes.forEach(lat => {
+      const latRad = (lat * Math.PI) / 180;
+      const latRadius = Math.cos(latRad) * gridRadius;
+      const yPos = Math.sin(latRad) * gridRadius;
+      
+      // Highlight special latitudes
+      const isEquator = lat === 0;
+      
+      let opacity = 0.08;
+      if (isEquator) opacity = 0.16;
+      else if (Math.abs(lat) % 30 === 0) opacity = 0.12;
+      
+      ctx.strokeStyle = `rgba(180, 220, 255, ${opacity})`;
+      
+      // Draw latitude circle as 3D arc segments
+      const latSegments = 60;
+      ctx.beginPath();
+      
+      for (let i = 0; i <= latSegments; i++) {
+        const angle = (i / latSegments) * Math.PI * 2;
+        
+        // 3D coordinates on the latitude circle
+        let x = latRadius * Math.cos(angle);
+        let y = yPos;
+        let z = latRadius * Math.sin(angle);
+        
+        // Apply rotationY for drag
+        const cosY = Math.cos(rotationY);
+        const sinY = Math.sin(rotationY);
+        const x1 = x * cosY - z * sinY;
+        const z1 = x * sinY + z * cosY;
+        
+        // Apply rotationX for vertical drag
+        const cosX = Math.cos(rotationX);
+        const sinX = Math.sin(rotationX);
+        const y1 = y * cosX - z1 * sinX;
+        const z2 = y * sinX + z1 * cosX;
+        
+        // Only draw front-facing segments
+        if (z2 > -gridRadius * 0.2) {
+          if (i === 0 || z2 <= -gridRadius * 0.2) {
+            ctx.moveTo(x1, y1);
+          } else {
+            ctx.lineTo(x1, y1);
+          }
+        }
+      }
+      
+      ctx.stroke();
+    });
+    
+    // Draw longitude meridians (great circles) - every 15° for 24 meridians
+    const numMeridians = 24; // Every 15 degrees
+    const segments = 60; // Number of segments to draw each meridian smoothly
+    
+    for (let m = 0; m < numMeridians; m++) {
+      const longitude = (m * 15) * Math.PI / 180; // Convert to radians
+      const totalAngle = longitude + earthGridRotation + rotationY;
+      
+      ctx.beginPath();
+      
+      // Draw meridian from south pole to north pole
+      for (let s = 0; s <= segments; s++) {
+        const lat = -Math.PI / 2 + (s / segments) * Math.PI; // -90° to +90°
+        
+        // 3D coordinates on sphere
+        let x = gridRadius * Math.cos(lat) * Math.cos(longitude + earthGridRotation);
+        let y = gridRadius * Math.sin(lat);
+        let z = gridRadius * Math.cos(lat) * Math.sin(longitude + earthGridRotation);
+        
+        // Apply rotationY for drag
+        const cosY = Math.cos(rotationY);
+        const sinY = Math.sin(rotationY);
+        const x1 = x * cosY - z * sinY;
+        const z1 = x * sinY + z * cosY;
+        
+        // Apply rotationX for vertical drag
+        const cosX = Math.cos(rotationX);
+        const sinX = Math.sin(rotationX);
+        const y1 = y * cosX - z1 * sinX;
+        const z2 = y * sinX + z1 * cosX;
+        
+        // Only draw front-facing segments
+        if (z2 > -gridRadius * 0.3) {
+          if (s === 0) {
+            ctx.moveTo(x1, y1);
+          } else {
+            ctx.lineTo(x1, y1);
+          }
+        } else {
+          // Skip back-facing segments, restart path when coming back to front
+          if (s < segments && s > 0) {
+            const nextLat = -Math.PI / 2 + ((s + 1) / segments) * Math.PI;
+            let nextX = gridRadius * Math.cos(nextLat) * Math.cos(longitude + earthGridRotation);
+            let nextY = gridRadius * Math.sin(nextLat);
+            let nextZ = gridRadius * Math.cos(nextLat) * Math.sin(longitude + earthGridRotation);
+            
+            const nextX1 = nextX * cosY - nextZ * sinY;
+            const nextZ1 = nextX * sinY + nextZ * cosY;
+            const nextY1 = nextY * cosX - nextZ1 * sinX;
+            const nextZ2 = nextY * sinX + nextZ1 * cosX;
+            
+            if (nextZ2 > -gridRadius * 0.3) {
+              ctx.moveTo(nextX1, nextY1);
+            }
+          }
+        }
+      }
+      
+      // Calculate opacity based on meridian orientation
+      const meridianNormal = Math.sin(totalAngle);
+      const visibility = Math.max(0, (meridianNormal + 1) / 2); // 0 to 1
+      
+      // Major meridians every 30° (uniform, no special prime meridian)
+      const isMajor = m % 2 === 0; // Every 30°
+      
+      // Uniform opacity for all meridians
+      let opacity = 0.18; // Minor meridians
+      if (isMajor) opacity = 0.35; // Major meridians (uniform)
+      
+      opacity *= (0.3 + visibility * 0.7);
+      
+      ctx.strokeStyle = `rgba(180, 220, 255, ${opacity})`;
+      ctx.stroke();
+    }
+    
+    ctx.restore();
+
+    // ==== EFFECT 3: BINARY DIGITS FLOATING THROUGHOUT ENTIRE ORB ====
+    if (binaryDigits.length === 0) initBinaryDigits();
+
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    
+    binaryDigits.forEach(digit => {
+      digit.angle += digit.speed;
+      digit.elevation += digit.elevationSpeed;
+      
+      if (digit.elevation > Math.PI / 2) digit.elevationSpeed = -Math.abs(digit.elevationSpeed);
+      if (digit.elevation < -Math.PI / 2) digit.elevationSpeed = Math.abs(digit.elevationSpeed);
+      
+      const radius = coreRadius * digit.distance;
+      
+      // Calculate 3D position
+      let x = Math.cos(digit.angle) * Math.cos(digit.elevation) * radius;
+      let y = Math.sin(digit.elevation) * radius;
+      let z = Math.sin(digit.angle) * Math.cos(digit.elevation) * radius;
+      
+      // Apply rotationY transform (horizontal mouse drag)
+      const cosY = Math.cos(rotationY);
+      const sinY = Math.sin(rotationY);
+      const x1 = x * cosY - z * sinY;
+      const z1 = x * sinY + z * cosY;
+      
+      // Apply rotationX transform (vertical mouse drag)
+      const cosX = Math.cos(rotationX);
+      const sinX = Math.sin(rotationX);
+      const y1 = y * cosX - z1 * sinX;
+      const z2 = y * sinX + z1 * cosX;
+      
+      // Translate to screen coordinates
+      x = cx + x1;
+      y = cy + y1;
+      z = z2;
+      
+      const depthFactor = (z + coreRadius * 0.75) / (coreRadius * 1.5);
+      const finalOpacity = digit.opacity * Math.max(0.2, depthFactor);
+      
+      const color = digit.value === '1' ? '100, 200, 255' : '150, 255, 200';
+      
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = `rgba(${color}, ${finalOpacity * 0.7})`;
+      ctx.fillStyle = `rgba(${color}, ${finalOpacity})`;
+      ctx.font = `bold ${digit.size * zoomLevel}px monospace`;
+      ctx.fillText(digit.value, x, y);
+    });
+    
+    ctx.shadowBlur = 0;
+
+    // Outer atmospheric glow with neon blue/purple aura (prominent colors, no outline, more transparent)
+    ctx.globalCompositeOperation = 'lighter';
+    const atmosphereGlow = ctx.createRadialGradient(
+      cx, cy, coreRadius * 0.85,
+      cx, cy, coreRadius * 1.3
+    );
+    atmosphereGlow.addColorStop(0, 'rgba(100, 180, 255, 0.45)'); // Reduced from 0.65 for transparency
+    atmosphereGlow.addColorStop(0.5, 'rgba(120, 100, 255, 0.28)'); // Reduced from 0.4 for transparency
+    atmosphereGlow.addColorStop(1, 'rgba(150, 50, 200, 0)');
+    
+    ctx.fillStyle = atmosphereGlow;
+    ctx.beginPath();
+    ctx.arc(cx, cy, coreRadius * 1.3, 0, Math.PI * 2);
+    ctx.fill();
+    
+    ctx.globalCompositeOperation = 'source-over';
+
+    ctx.restore();
+  }
+
+  function drawOldEffects() {
+    // LAYER 2: Middle pulse ring (expanding and fading)
+    const pulse1 = Math.sin(pulsePhase) * 0.5 + 0.5; // 0 to 1
+    const pulse2 = Math.sin(pulsePhase + Math.PI) * 0.5 + 0.5; // Offset pulse
+    
+    // First pulse wave
+    const pulseRadius1 = coreRadius * (0.4 + pulse1 * 0.25);
+    const pulseOpacity1 = (1 - pulse1) * 0.6;
+    
+    ctx.strokeStyle = `rgba(100, 200, 255, ${pulseOpacity1})`;
+    ctx.lineWidth = 3;
+    ctx.shadowBlur = 15;
+    ctx.shadowColor = `rgba(100, 200, 255, ${pulseOpacity1})`;
+    ctx.beginPath();
+    ctx.arc(cx, cy, pulseRadius1, 0, Math.PI * 2);
+    ctx.stroke();
+    
+    // Second pulse wave
+    const pulseRadius2 = coreRadius * (0.4 + pulse2 * 0.25);
+    const pulseOpacity2 = (1 - pulse2) * 0.6;
+    
+    ctx.strokeStyle = `rgba(50, 150, 255, ${pulseOpacity2})`;
+    ctx.lineWidth = 2.5;
+    ctx.shadowBlur = 12;
+    ctx.shadowColor = `rgba(50, 150, 255, ${pulseOpacity2})`;
+    ctx.beginPath();
+    ctx.arc(cx, cy, pulseRadius2, 0, Math.PI * 2);
+    ctx.stroke();
+    
+    ctx.shadowBlur = 0;
+
+    // LAYER 3: Outer dashed rotating rings
+    ctx.globalCompositeOperation = 'lighter';
+    
+    // Outer ring 1 - clockwise rotation
+    const dashPattern1 = 15;
+    const gapPattern1 = 25;
+    const numDashes1 = Math.floor((Math.PI * 2 * coreRadius * 0.75) / (dashPattern1 + gapPattern1));
+    
+    ctx.strokeStyle = 'rgba(100, 180, 255, 0.7)';
+    ctx.lineWidth = 2.5;
+    ctx.lineCap = 'round';
+    
+    for (let i = 0; i < numDashes1; i++) {
+      const dashAngle = (i / numDashes1) * Math.PI * 2 + haloRotation;
+      const dashLength = (dashPattern1 / (coreRadius * 0.75));
+      
+      ctx.beginPath();
+      ctx.arc(cx, cy, coreRadius * 0.75, dashAngle, dashAngle + dashLength);
+      ctx.stroke();
+    }
+    
+    // Outer ring 2 - counter-clockwise rotation
+    const dashPattern2 = 12;
+    const gapPattern2 = 20;
+    const numDashes2 = Math.floor((Math.PI * 2 * coreRadius * 0.85) / (dashPattern2 + gapPattern2));
+    
+    ctx.strokeStyle = 'rgba(150, 200, 255, 0.6)';
+    ctx.lineWidth = 2;
+    
+    for (let i = 0; i < numDashes2; i++) {
+      const dashAngle = (i / numDashes2) * Math.PI * 2 - haloRotation * 1.5;
+      const dashLength = (dashPattern2 / (coreRadius * 0.85));
+      
+      ctx.beginPath();
+      ctx.arc(cx, cy, coreRadius * 0.85, dashAngle, dashAngle + dashLength);
+      ctx.stroke();
+    }
+    
+    // Outer ring 3 - slower clockwise with glow
+    const dashPattern3 = 20;
+    const gapPattern3 = 30;
+    const numDashes3 = Math.floor((Math.PI * 2 * coreRadius * 0.95) / (dashPattern3 + gapPattern3));
+    
+    ctx.strokeStyle = 'rgba(80, 160, 255, 0.5)';
+    ctx.lineWidth = 1.5;
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = 'rgba(80, 160, 255, 0.6)';
+    
+    for (let i = 0; i < numDashes3; i++) {
+      const dashAngle = (i / numDashes3) * Math.PI * 2 + haloRotation * 0.5;
+      const dashLength = (dashPattern3 / (coreRadius * 0.95));
+      
+      ctx.beginPath();
+      ctx.arc(cx, cy, coreRadius * 0.95, dashAngle, dashAngle + dashLength);
+      ctx.stroke();
+    }
+    
+    ctx.shadowBlur = 0;
+
+    // LAYER 4: Subtle connecting signal lines (random radial lines)
+    ctx.strokeStyle = 'rgba(100, 200, 255, 0.2)';
+    ctx.lineWidth = 1;
+    
+    for (let i = 0; i < 8; i++) {
+      const angle = (i / 8) * Math.PI * 2 + haloRotation * 0.3;
+      const innerR = coreRadius * 0.4;
+      const outerR = coreRadius * 0.7;
+      
+      const x1 = cx + Math.cos(angle) * innerR;
+      const y1 = cy + Math.sin(angle) * innerR;
+      const x2 = cx + Math.cos(angle) * outerR;
+      const y2 = cy + Math.sin(angle) * outerR;
+      
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
+    }
+
+    ctx.restore();
+  }
+
   function drawIcons() {
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
@@ -453,7 +899,8 @@
     // Update and draw
     updatePositions();
     drawDynamicConnections(); // Draw connecting lines based on proximity
-    drawIcons();
+    drawEarth(); // Draw Earth in the center
+    drawIcons(); // Draw satellite icons orbiting Earth
 
     // Continue animation loop
     animationId = requestAnimationFrame(animate);
