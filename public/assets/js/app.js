@@ -127,9 +127,10 @@ if (aboutCards && aboutSection) {
   const aboutObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting && !aboutCards.classList.contains("animate-cards")) {
+        if (entry.isIntersecting) {
           aboutCards.classList.add("animate-cards");
-          aboutObserver.unobserve(aboutSection); // Only trigger once
+        } else {
+          aboutCards.classList.remove("animate-cards");
         }
       });
     },
