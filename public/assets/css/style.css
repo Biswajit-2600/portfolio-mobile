@@ -536,13 +536,94 @@ section {
   font-weight: 700;
 }
 
+.about-layout {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  width: 100%;
+  margin-top: 30px;
+  position: relative;
+}
+
+.about-left {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+
+.about-image-wrapper {
+  width: 420px;
+  height: 520px;
+  border-radius: 24px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+
+.about-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  position: relative;
+  z-index: 2;
+}
+
+.about-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+}
+
 .info-cards {
-  display: grid;
-  grid-template-columns: auto auto auto;
+  display: flex;
+  flex-direction: column;
   gap: 20px;
   width: 100%;
   height: 100%;
-  margin-top: 30px;
+}
+
+.info-cards .card:nth-child(1) {
+  opacity: 0;
+  transform: scale(0.2) translateX(-480px);
+  transform-origin: center left;
+  position: relative;
+}
+
+.info-cards .card:nth-child(2) {
+  opacity: 0;
+  transform: scale(0.2) translateX(-480px);
+  transform-origin: center left;
+  position: relative;
+}
+
+.info-cards.animate-cards .card:nth-child(1) {
+  animation: popOutSmooth 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation-delay: 1.2s;
+}
+
+.info-cards.animate-cards .card:nth-child(2) {
+  animation: popOutSmooth 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation-delay: 1.5s;
+}
+
+@keyframes popOutSmooth {
+  0% {
+    opacity: 0;
+    transform: scale(0.2) translateX(-480px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateX(0);
+  }
 }
 
 .card {
@@ -1198,7 +1279,28 @@ section {
   }
 }
 
+@media screen and (max-width: 900px) {
+  .about-layout {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .about-left {
+    margin-bottom: 30px;
+  }
+
+  .about-image-wrapper {
+    width: 320px;
+    height: 400px;
+  }
+}
+
 @media screen and (max-width: 700px) {
+  .about-image-wrapper {
+    width: 280px;
+    height: 350px;
+  }
+
   header ul a {
     text-decoration: none;
     color: white;
